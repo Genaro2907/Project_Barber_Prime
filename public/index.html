@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Barbearia Prime</title>
+
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="logo">
+
+      <i class="fa-solid fa-scissors"></i>
+      <span>Barbearia Prime</span>
+
+    </div>
+
+    <nav class="navbar">
+
+      <a href="#inicio">Início</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#agendamento">Agendamento</a>
+
+    </nav>
+
+    <div class="menu-mobile">
+
+      <i class="fa-solid fa-bars"></i>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero" id="inicio">
+
+    <div class="hero-content">
+
+      <span class="tag">
+        ✦ Barbearia Premium em São Paulo
+      </span>
+
+      <h1>
+        Seu estilo começa aqui
+      </h1>
+
+      <p>
+        Cortes modernos, barba, estética masculina e atendimento premium
+        para homens que valorizam aparência e estilo.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="#agendamento" class="btn">
+          Agendar Agora
+        </a>
+
+        <a href="#servicos" class="btn-outline">
+          Ver Serviços
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SERVIÇOS -->
+
+  <section class="services section" id="servicos">
+
+    <div class="section-title">
+
+      <span>Nossos Serviços</span>
+      <h2>Qualidade em cada detalhe</h2>
+
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <i class="fa-solid fa-scissors"></i>
+
+        <h3>Corte Masculino</h3>
+
+        <p>
+          Cortes modernos e clássicos feitos por barbeiros profissionais.
+        </p>
+
+        <span>R$ 35</span>
+
+      </div>
+
+      <div class="card">
+
+        <i class="fa-solid fa-user"></i>
+
+        <h3>Barba</h3>
+
+        <p>
+          Acabamento premium e modelagem completa da barba.
+        </p>
+
+        <span>R$ 25</span>
+
+      </div>
+
+      <div class="card">
+
+        <i class="fa-solid fa-eye"></i>
+
+        <h3>Sobrancelha</h3>
+
+        <p>
+          Design masculino para realçar seu visual.
+        </p>
+
+        <span>R$ 15</span>
+
+      </div>
+
+      <div class="card">
+
+        <i class="fa-solid fa-spa"></i>
+
+        <h3>Limpeza de Pele</h3>
+
+        <p>
+          Procedimentos faciais para cuidar da sua pele.
+        </p>
+
+        <span>R$ 60</span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SOBRE -->
+
+  <section class="about section" id="sobre">
+
+    <div class="about-text">
+
+      <span>Sobre Nós</span>
+
+      <h2>
+        Tradição e modernidade em um só lugar
+      </h2>
+
+      <p>
+        Nossa missão é oferecer uma experiência diferenciada para cada cliente,
+        com ambiente sofisticado, profissionais especializados e atendimento
+        de alto padrão.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <h3 class="counter" data-target="5">0</h3>
+          <p>Anos de Experiência</p>
+
+        </div>
+
+        <div class="stat">
+
+          <h3 class="counter" data-target="1500">0</h3>
+          <p>Clientes Satisfeitos</p>
+
+        </div>
+
+        <div class="stat">
+
+          <h3 class="counter" data-target="4">0</h3>
+          <p>Barbeiros Profissionais</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- GALERIA -->
+
+  <section class="gallery section" id="galeria">
+
+    <div class="section-title">
+
+      <span>Galeria</span>
+      <h2>Nossos Trabalhos</h2>
+
+    </div>
+
+    <div class="gallery-grid">
+
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?q=80&w=800&auto=format&fit=crop">
+
+      <img src="https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=800&auto=format&fit=crop">
+
+      <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=800&auto=format&fit=crop">
+
+      <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=800&auto=format&fit=crop">
+
+    </div>
+
+  </section>
+
+  <!-- AGENDAMENTO -->
+
+  <section class="booking section" id="agendamento">
+
+    <div class="section-title">
+
+      <span>Agendamento</span>
+      <h2>Reserve seu horário</h2>
+
+    </div>
+
+    <form id="bookingForm">
+
+      <div class="input-group">
+
+        <input type="text" id="nome" placeholder="Seu nome" required>
+
+        <i class="fa-solid fa-user"></i>
+
+      </div>
+
+      <div class="input-group">
+
+        <input type="tel" id="telefone" placeholder="Seu telefone" required>
+
+        <i class="fa-solid fa-phone"></i>
+
+      </div>
+
+      <div class="input-group">
+
+        <select id="servico">
+
+          <option>Corte Masculino</option>
+          <option>Barba</option>
+          <option>Sobrancelha</option>
+          <option>Limpeza de Pele</option>
+
+        </select>
+
+        <i class="fa-solid fa-scissors"></i>
+
+      </div>
+
+      <div class="input-group">
+
+        <input type="date" id="data" required>
+
+        <i class="fa-solid fa-calendar"></i>
+
+      </div>
+
+      <div class="input-group">
+
+        <select id="horario">
+
+          <option>09:00</option>
+          <option>10:00</option>
+          <option>11:00</option>
+          <option>13:00</option>
+          <option>14:00</option>
+          <option>15:00</option>
+          <option>16:00</option>
+
+        </select>
+
+        <i class="fa-solid fa-clock"></i>
+
+      </div>
+
+      <button type="submit">
+        Confirmar Agendamento
+      </button>
+
+    </form>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>
+      © 2026 Barbearia Prime - Todos os direitos reservados
+    </p>
+
+  </footer>
+
+  <!-- WHATSAPP -->
+
+  <a href="#" class="whatsapp">
+
+    <i class="fa-brands fa-whatsapp"></i>
+
+  </a>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
