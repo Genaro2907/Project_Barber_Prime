@@ -62,4 +62,29 @@ export class AppointmentController {
       ctx.body = response;
     }
   }
+
+  static async getAll(ctx: Context): Promise<void> {
+    try {
+      const appointments = await Appointment.find().sort({ appointmentDate: 1, appointmentTime: 1 });
+
+      ctx.status = 200; // OK
+      const response: ApiResponse = {
+        success: true,
+        message: 'Appointments retrieved successfully',
+        data: appointments,
+      };
+      
+      ctx.body = response;
+
+    } catch (error) {
+      console.error('❌ Error fetching appointments:', error);
+      
+      ctx.status = 500;
+      const response: ApiResponse = {
+        success: false,
+        message: 'An internal error occurred while fetching appointments.',
+      };
+      ctx.body = response;
+    }
+  }
 }

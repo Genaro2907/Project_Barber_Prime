@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Barbearia Prime</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Estilos específicos para o Acordeão (Admin) */
+    .admin-container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .accordion-item {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .accordion-header {
+      padding: 20px 25px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    .accordion-header:hover {
+      background: #1a1a1a;
+    }
+
+    .accordion-header h4 {
+      font-size: 18px;
+      color: gold;
+    }
+
+    .accordion-header .info-resumo {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .accordion-content {
+      padding: 0 25px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
+      background: #0f0f0f;
+      border-top: 1px solid transparent;
+    }
+
+    .accordion-item.active .accordion-content {
+      padding: 20px 25px;
+      max-height: 500px;
+      border-top: 1px solid #222;
+    }
+
+    .accordion-item.active .fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 8px;
+    }
+
+    .detail-row span:first-child {
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 50px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <i class="fa-solid fa-scissors"></i>
+      <span>Barbearia Prime <small style="font-size: 12px; color: #666;">Admin</small></span>
+    </div>
+    <nav class="navbar">
+      <a href="index.html">Voltar ao Site</a>
+    </nav>
+  </header>
+
+  <section class="section">
+    <div class="section-title">
+      <span>Painel de Controle</span>
+      <h2>Agendamentos Realizados</h2>
+    </div>
+
+    <div class="admin-container" id="appointmentsList">
+      <div class="no-data">Carregando agendamentos...</div>
+    </div>
+  </section>
+
+  <script src="admin-script.js"></script>
+</body>
+</html>

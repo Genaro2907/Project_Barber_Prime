@@ -4,5 +4,6 @@ import { AppointmentController } from '../controllers/AppointmentController';
 const appointmentRouter = new Router({ prefix: '/api/appointments' });
 
 appointmentRouter.post('/', AppointmentController.create);
+appointmentRouter.get('/', AppointmentController.getAll);
 
 export default appointmentRouter;
