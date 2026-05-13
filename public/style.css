@@ -467,17 +467,19 @@ body{
   background: #0d0d0d;
 }
 
-form{
+.booking-form{
   max-width: 700px;
   margin: auto;
 
-  background: #141414;
+  background:
+    linear-gradient(145deg, #181818, #101010);
 
-  border: 1px solid #222;
+  border: 1px solid #2a2a2a;
 
   padding: 50px;
 
   border-radius: 28px;
+  box-shadow: 0 22px 50px rgba(0,0,0,0.35);
 
   display: flex;
   flex-direction: column;
@@ -488,28 +490,37 @@ form{
   position: relative;
 }
 
+.input-group label{
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #c8c8c8;
+  font-weight: 500;
+}
+
 .input-group i{
   position: absolute;
 
   right: 20px;
-  top: 50%;
+  top: calc(50% + 12px);
 
   transform: translateY(-50%);
 
   color: gold;
+  pointer-events: none;
 }
 
 input,
 select{
   width: 100%;
 
-  padding: 18px 20px;
+  padding: 18px 54px 18px 20px;
 
   border-radius: 14px;
 
-  border: 1px solid #2b2b2b;
+  border: 1px solid #323232;
 
-  background: #1b1b1b;
+  background: #1f1f1f;
   color: white;
 
   font-size: 16px;
@@ -526,7 +537,20 @@ select:focus{
   box-shadow: 0 0 20px rgba(255,215,0,0.08);
 }
 
-button{
+input::placeholder{
+  color: #8e8e8e;
+}
+
+input[type="date"]{
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+  cursor: pointer;
+}
+
+.booking-form button{
   padding: 18px;
 
   border: none;
@@ -543,7 +567,7 @@ button{
   transition: 0.4s;
 }
 
-button:hover{
+.booking-form button:hover{
   transform: translateY(-5px);
 
   box-shadow: 0 15px 35px rgba(255,215,0,0.25);
@@ -670,7 +694,7 @@ footer{
     font-size: 38px;
   }
 
-  form{
+  .booking-form{
     padding: 35px 25px;
   }
 
@@ -691,4 +715,155 @@ footer{
     padding: 90px 5%;
   }
 
+}
+
+/* Estilo para o link de acesso administrativo no rodapé do form */
+.admin-access-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-access-link:hover {
+  color: gold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.admin-access-link i {
+  font-size: 12px;
+}
+
+/* =========================
+   ADMIN PAGE
+========================= */
+
+.admin-page .section{
+  min-height: 100vh;
+  padding-top: 140px;
+}
+
+.admin-helper-text{
+  margin-top: 12px;
+  color: #9b9b9b;
+  font-size: 15px;
+}
+
+.admin-badge{
+  font-size: 12px;
+  color: #868686;
+  font-weight: 500;
+}
+
+.admin-container {
+  max-width: 900px;
+  margin: auto;
+}
+
+.accordion-item {
+  background: linear-gradient(145deg, #171717, #111);
+  border: 1px solid #292929;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.accordion-item:hover{
+  border-color: rgba(255,215,0,0.45);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.accordion-header {
+  padding: 20px 25px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.accordion-header:hover {
+  background: #1c1c1c;
+}
+
+.accordion-header h4 {
+  font-size: 18px;
+  color: gold;
+}
+
+.accordion-header .info-resumo {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+.accordion-content {
+  padding: 0 25px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  background: #111111;
+  border-top: 1px solid transparent;
+}
+
+.accordion-item.active .accordion-content {
+  padding: 20px 25px;
+  max-height: 500px;
+  border-top: 1px solid #2a2a2a;
+}
+
+.accordion-item.active .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #1f1f1f;
+  padding-bottom: 8px;
+}
+
+.detail-row span:first-child {
+  color: #b1b1b1;
+  font-weight: 500;
+}
+
+.appointment-actions{
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-appointment-btn{
+  border: 1px solid rgba(255, 95, 95, 0.6);
+  background: rgba(255, 77, 77, 0.12);
+  color: #ff8c8c;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.25s;
+}
+
+.cancel-appointment-btn:hover{
+  background: rgba(255, 77, 77, 0.18);
+  color: #ffb3b3;
+}
+
+.no-data {
+  text-align: center;
+  padding: 50px;
+  color: #7a7a7a;
+}
+
+.no-data.error {
+  color: #ff6666;
 }

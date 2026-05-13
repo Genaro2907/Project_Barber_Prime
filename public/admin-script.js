@@ -3,14 +3,54 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('appointmentsList');
 
-  try {
-    const response = await fetch('/api/appointments');
-    const result = await response.json();
+  if (!container) {
+    return;
+  }
 
-    if (result.success && result.data.length > 0) {
-      container.innerHTML = ''; // Limpa o carregando
+  const setStateMessage = (message, isError = false) => {
+    container.innerHTML = `<div class="no-data${isError ? ' error' : ''}">${message}</div>`;
+  };
 
-      result.data.forEach(appointment => {
+  const cancelAppointment = async (appointmentId, customerName) => {
+    const shouldCancel = window.confirm(`Tem certeza que deseja cancelar o agendamento de ${customerName}?`);
+    if (!shouldCancel) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/appointments/${appointmentId}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        await loadAppointments();
+        alert('Agendamento cancelado com sucesso.');
+        return;
+      }
+
+      alert(`Erro ao cancelar agendamento: ${result.message}`);
+    } catch (error) {
+      console.error('Erro ao cancelar agendamento:', error);
+      alert('Erro de conexão com o servidor. Tente novamente.');
+    }
+  };
+
+  const loadAppointments = async () => {
+    setStateMessage('Carregando agendamentos...');
+
+    try {
+      const response = await fetch('/api/appointments');
+      const result = await response.json();
+
+      if (!result.success || result.data.length === 0) {
+        setStateMessage('Nenhum agendamento encontrado até o momento.');
+        return;
+      }
+
+      container.innerHTML = '';
+
+      result.data.forEach((appointment) => {
         const item = document.createElement('div');
         item.className = 'accordion-item';
 
@@ -38,6 +78,12 @@ document.addEventListener('DOMContentLoaded', async () => {
               <span>Data do Registro:</span>
               <span>${new Date(appointment.createdAt).toLocaleString('pt-BR')}</span>
             </div>
+            <div class="appointment-actions">
+              <button type="button" class="cancel-appointment-btn">
+                <i class="fa-solid fa-xmark"></i>
+                Cancelar agendamento
+              </button>
+            </div>
           </div>
         `;
 
@@ -45,13 +91,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           item.classList.toggle('active');
         });
 
+        item.querySelector('.cancel-appointment-btn').addEventListener('click', async (event) => {
+          event.stopPropagation();
+          await cancelAppointment(appointment._id, appointment.customerName);
+        });
+
         container.appendChild(item);
       });
-    } else {
-      container.innerHTML = '<div class="no-data">Nenhum agendamento encontrado até o momento.</div>';
+    } catch (error) {
+      console.error('Erro ao buscar agendamentos:', error);
+      setStateMessage('Erro ao conectar com o servidor.', true);
     }
-  } catch (error) {
-    console.error('Erro ao buscar agendamentos:', error);
-    container.innerHTML = '<div class="no-data" style="color: #ff4d4d;">Erro ao conectar com o servidor.</div>';
-  }
+  };
+
+  await loadAppointments();
 });

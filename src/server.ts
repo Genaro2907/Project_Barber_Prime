@@ -6,7 +6,7 @@ import bodyParser from 'koa-bodyparser';
 import appointmentRouter from './routes/appointment.routes';
 
 const app = new Koa();
-const PORT = 3000;
+const PORT = 3001;
 
 connectDB();
 app.use(bodyParser());

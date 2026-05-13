@@ -246,10 +246,11 @@
 
     </div>
 
-    <form id="bookingForm">
+    <form id="bookingForm" class="booking-form">
 
       <div class="input-group">
 
+        <label for="nome">Nome completo</label>
         <input type="text" id="nome" placeholder="Seu nome" required>
 
         <i class="fa-solid fa-user"></i>
@@ -258,6 +259,7 @@
 
       <div class="input-group">
 
+        <label for="telefone">Telefone</label>
         <input type="tel" id="telefone" placeholder="Seu telefone" required>
 
         <i class="fa-solid fa-phone"></i>
@@ -266,6 +268,7 @@
 
       <div class="input-group">
 
+        <label for="servico">Serviço</label>
         <select id="servico">
 
           <option>Corte Masculino</option>
@@ -281,6 +284,7 @@
 
       <div class="input-group">
 
+        <label for="data">Data</label>
         <input type="date" id="data" required>
 
         <i class="fa-solid fa-calendar"></i>
@@ -289,6 +293,7 @@
 
       <div class="input-group">
 
+        <label for="horario">Horário</label>
         <select id="horario">
 
           <option>09:00</option>
@@ -310,6 +315,12 @@
       </button>
 
     </form>
+    
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="admin.html" class="admin-access-link">
+        <i class="fa-solid fa-lock"></i> Acessar Painel de Agendamentos (Admin)
+      </a>
+    </div>
 
   </section>
 
@@ -325,10 +336,8 @@
 
   <!-- WHATSAPP -->
 
-  <a href="#" class="whatsapp">
-
+  <a href="https://wa.me/5511975831101?text=Olá!%20Gostaria%20de%20tirar%20uma%20dúvida%20sobre%20os%20serviços%20da%20Barbearia%20Prime." class="whatsapp" target="_blank" rel="noopener noreferrer">
     <i class="fa-brands fa-whatsapp"></i>
-
   </a>
 
   <script src="script.js"></script>

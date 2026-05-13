@@ -1,5 +1,6 @@
 // src/controllers/AppointmentController.ts
 import { Context } from 'koa';
+import { Types } from 'mongoose';
 import { Appointment, ServiceType } from '../models/Appointment';
 import { ApiResponse, CreateAppointmentDTO } from '../types';
 
@@ -83,6 +84,51 @@ export class AppointmentController {
       const response: ApiResponse = {
         success: false,
         message: 'An internal error occurred while fetching appointments.',
+      };
+      ctx.body = response;
+    }
+  }
+
+  static async cancel(ctx: Context): Promise<void> {
+    try {
+      const { id } = ctx.params;
+
+      if (!id || !Types.ObjectId.isValid(id)) {
+        ctx.status = 400;
+        const response: ApiResponse = {
+          success: false,
+          message: 'Invalid appointment ID.',
+        };
+        ctx.body = response;
+        return;
+      }
+
+      const deletedAppointment = await Appointment.findByIdAndDelete(id);
+
+      if (!deletedAppointment) {
+        ctx.status = 404;
+        const response: ApiResponse = {
+          success: false,
+          message: 'Appointment not found.',
+        };
+        ctx.body = response;
+        return;
+      }
+
+      ctx.status = 200;
+      const response: ApiResponse = {
+        success: true,
+        message: 'Appointment canceled successfully.',
+        data: deletedAppointment,
+      };
+      ctx.body = response;
+    } catch (error) {
+      console.error('❌ Error canceling appointment:', error);
+
+      ctx.status = 500;
+      const response: ApiResponse = {
+        success: false,
+        message: 'An internal error occurred while canceling the appointment.',
       };
       ctx.body = response;
     }
