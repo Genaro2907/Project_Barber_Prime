@@ -9,26 +9,27 @@ export class AppointmentController {
   static async create(ctx: Context): Promise<void> {
     try {
       const body = ctx.request.body as CreateAppointmentDTO;
-      const { customerName, phoneNumber, service, professional, appointmentDate, appointmentTime } = body;
+      const { customerName, phoneNumber, services, professional, appointmentDate, appointmentTime } = body;
 
       // 1. Validação de Campos Obrigatórios
-      if (!customerName || !phoneNumber || !service || !professional || !appointmentDate || !appointmentTime) {
+      if (!customerName || !phoneNumber || !services || !Array.isArray(services) || services.length === 0 || !professional || !appointmentDate || !appointmentTime) {
         ctx.status = 400; // Bad Request
         const response: ApiResponse = {
           success: false,
           message: 'Validation failed.',
-          errors: ['All fields are required.'],
+          errors: ['All fields are required. Please select at least one service.'],
         };
         ctx.body = response;
         return;
       }
 
-      const isValidService = Object.values(ServiceType).includes(service as ServiceType);
-      if (!isValidService) {
+      // validate services
+      const invalidService = services.find(s => !Object.values(ServiceType).includes(s as ServiceType));
+      if (invalidService) {
         ctx.status = 400;
         const response: ApiResponse = {
           success: false,
-          message: 'Invalid service selected.',
+          message: `Invalid service selected: ${invalidService}`,
         };
         ctx.body = response;
         return;
@@ -45,13 +46,24 @@ export class AppointmentController {
         return;
       }
 
+      // Prices mapping (server authoritative)
+      const priceMap: Record<string, number> = {
+        'Corte Masculino': 35,
+        'Barba': 25,
+        'Sobrancelha': 15,
+        'Limpeza de Pele': 60,
+      };
+
+      const totalPrice = services.reduce((acc, s) => acc + (priceMap[s] ?? 0), 0);
+
       const newAppointment = new Appointment({
         customerName,
         phoneNumber,
-        service,
+        services,
         professional,
         appointmentDate,
         appointmentTime,
+        totalPrice,
       });
 
       await newAppointment.save();
@@ -158,7 +170,8 @@ export class AppointmentController {
       const todayAppointments = await Appointment.countDocuments({ appointmentDate: todayDate });
 
       const mostRequestedServiceResult = await Appointment.aggregate<{ _id: string; count: number }>([
-        { $group: { _id: '$service', count: { $sum: 1 } } },
+        { $unwind: '$services' },
+        { $group: { _id: '$services', count: { $sum: 1 } } },
         { $sort: { count: -1 } },
         { $limit: 1 },
       ]);

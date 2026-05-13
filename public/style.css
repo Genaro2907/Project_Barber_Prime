@@ -537,6 +537,104 @@ select:focus{
   box-shadow: 0 0 20px rgba(255,215,0,0.08);
 }
 
+.multi-select{
+  position: relative;
+}
+
+.booking-form .multi-select-toggle {
+  width: 100%;
+  padding: 18px 54px 18px 20px;
+  border-radius: 14px;
+  border: 1px solid #3a3a3a;
+  background: #1f1f1f; 
+  color: #c8c8c8; 
+  font-weight: 400; 
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  text-align: left;
+}
+
+.booking-form .multi-select-toggle:hover {
+  border-color: gold;
+}
+
+.multi-select.has-selection .multi-select-toggle{
+  color: #fff;
+}
+
+.multi-select-toggle:focus,
+.multi-select-toggle:focus-visible{
+  outline: none;
+  border-color: #7a7a7a;
+  box-shadow: 0 0 16px rgba(255,255,255,0.08);
+}
+
+.multi-select.open .multi-select-toggle{
+  border-color: #7a7a7a;
+  box-shadow: 0 0 16px rgba(255,255,255,0.08);
+}
+
+.multi-select-count{
+  margin-left: auto;
+  font-size: 13px;
+  color: #d7d7d7;
+}
+
+.multi-select-menu{
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+  z-index: 20;
+}
+
+.multi-select.open .multi-select-menu{
+  display: block;
+}
+
+.multi-select-option{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.multi-select-option:hover{
+  background: #2a2a2a;
+}
+
+.multi-select-option input{
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #141414;
+  accent-color: #bdbdbd;
+  flex: 0 0 16px;
+}
+
+.services-group i{
+  color: #bdbdbd;
+}
+
 input::placeholder{
   color: #8e8e8e;
 }
@@ -552,18 +650,13 @@ input[type="date"]::-webkit-calendar-picker-indicator{
 
 .booking-form button{
   padding: 18px;
-
   border: none;
   border-radius: 14px;
-
   background: gold;
   color: black;
-
   font-size: 18px;
   font-weight: 700;
-
   cursor: pointer;
-
   transition: 0.4s;
 }
 

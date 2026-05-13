@@ -192,7 +192,7 @@
 
         <div class="stat">
 
-          <h3 class="counter" data-target="1500">1532</h3>
+          <h3 class="counter" data-target="1500">5374</h3>
           <p>Clientes Satisfeitos</p>
 
         </div>
@@ -248,7 +248,7 @@
 
     <form id="bookingForm" class="booking-form">
 
-      <div class="input-group">
+      <div class="input-group services-group">
 
         <label for="nome">Nome completo</label>
         <input type="text" id="nome" placeholder="Seu nome" required>
@@ -268,19 +268,37 @@
 
       <div class="input-group">
 
-        <label for="servico">Serviço</label>
-        <select id="servico">
-
-          <option>Corte Masculino</option>
-          <option>Barba</option>
-          <option>Sobrancelha</option>
-          <option>Limpeza de Pele</option>
-
-        </select>
+        <label>Serviços</label>
+        <div class="multi-select" id="servicesDropdown">
+          <button type="button" class="multi-select-toggle" aria-expanded="false" aria-haspopup="listbox">
+            <span class="multi-select-text">Selecione os serviços</span>
+            <span class="multi-select-count"></span>
+          </button>
+          <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+            <label class="multi-select-option">
+              <input type="checkbox" value="Corte Masculino" data-price="35">
+              Corte Masculino — R$ 35
+            </label>
+            <label class="multi-select-option">
+              <input type="checkbox" value="Barba" data-price="25">
+              Barba — R$ 25
+            </label>
+            <label class="multi-select-option">
+              <input type="checkbox" value="Sobrancelha" data-price="15">
+              Sobrancelha — R$ 15
+            </label>
+            <label class="multi-select-option">
+              <input type="checkbox" value="Limpeza de Pele" data-price="60">
+              Limpeza de Pele — R$ 60
+            </label>
+          </div>
+        </div>
 
         <i class="fa-solid fa-scissors"></i>
 
       </div>
+
+      <div id="bookingTotal" class="booking-total">Total: R$ 0</div>
 
       <div class="input-group">
 

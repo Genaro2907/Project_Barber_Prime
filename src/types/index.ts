@@ -8,10 +8,11 @@ export interface ApiResponse<T = unknown> {
 export interface CreateAppointmentDTO {
   customerName: string;
   phoneNumber: string;
-  service: string;
+  services: string[];
   professional: string;
   appointmentDate: string;
   appointmentTime: string;
+  totalPrice?: number;
 }
 
 export interface VerifyPinDTO {

@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
           <div class="accordion-content">
             <div class="detail-row">
-              <span>Serviço:</span>
-              <span>${appointment.service}</span>
+              <span>Serviços:</span>
+              <span>${(appointment.services || []).join(', ')}</span>
             </div>
             <div class="detail-row">
               <span>Profissional:</span>
@@ -179,6 +179,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="detail-row">
               <span>Telefone:</span>
               <span>${appointment.phoneNumber}</span>
+            </div>
+            <div class="detail-row">
+              <span>Valor Total:</span>
+              <span>R$ ${appointment.totalPrice?.toFixed ? appointment.totalPrice.toFixed(2).replace('.', ',') : (appointment.totalPrice || 0)}</span>
             </div>
             <div class="detail-row">
               <span>Data do Registro:</span>
