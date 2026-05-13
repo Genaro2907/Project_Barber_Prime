@@ -21,5 +21,5 @@ const publicDirectoryPath = path.join(__dirname, '../public');
 app.use(serve(publicDirectoryPath));
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server is successfully running on http://localhost:${PORT}`);
+  console.log(`🚀 Server is successfully running`);
 });
