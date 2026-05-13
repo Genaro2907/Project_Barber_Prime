@@ -7,7 +7,7 @@ import appointmentRouter from './routes/appointment.routes';
 import authRouter from './routes/auth.routes';
 
 const app = new Koa();
-const PORT = 3001;
+const PORT = 3000;
 
 connectDB();
 app.use(bodyParser());
