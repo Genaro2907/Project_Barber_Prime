@@ -5,6 +5,7 @@ const appointmentRouter = new Router({ prefix: '/api/appointments' });
 
 appointmentRouter.post('/', AppointmentController.create);
 appointmentRouter.get('/', AppointmentController.getAll);
+appointmentRouter.get('/stats', AppointmentController.getStats);
 appointmentRouter.delete('/:id', AppointmentController.cancel);
 
 export default appointmentRouter;

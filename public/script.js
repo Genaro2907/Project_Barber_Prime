@@ -1,9 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   const bookingForm = document.getElementById('bookingForm');
+  const bookingFeedback = document.getElementById('bookingFeedback');
+
+  const showBookingFeedback = (message, type) => {
+    if (!bookingFeedback) {
+      return;
+    }
+
+    bookingFeedback.textContent = message;
+    bookingFeedback.classList.remove('success', 'error', 'visible');
+
+    if (!message) {
+      return;
+    }
+
+    bookingFeedback.classList.add(type, 'visible');
+  };
 
   if (bookingForm) {
     bookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      showBookingFeedback('', 'success');
 
       const submitButton = bookingForm.querySelector('button[type="submit"]');
       const originalButtonText = submitButton.innerText;
@@ -13,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const customerName = document.getElementById('nome').value;
       const phoneNumber = document.getElementById('telefone').value;
       const service = document.getElementById('servico').value;
+      const professional = document.getElementById('profissional').value;
       const appointmentDate = document.getElementById('data').value;
       const appointmentTime = document.getElementById('horario').value;
 
@@ -20,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customerName,
         phoneNumber,
         service,
+        professional,
         appointmentDate,
         appointmentTime
       };
@@ -36,14 +55,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
 
         if (response.ok && result.success) {
-          alert('Agendamento realizado com sucesso! Te esperamos na Barbearia Prime.');
+          showBookingFeedback('Agendamento confirmado! Obrigado!', 'success');
           bookingForm.reset();
         } else {
-          alert(`Erro ao agendar: ${result.message}`);
+          showBookingFeedback(`Erro ao agendar: ${result.message}`, 'error');
         }
       } catch (error) {
         console.error('Erro na requisição:', error);
-        alert('Erro de conexão com o servidor. Verifique sua internet ou tente novamente mais tarde.');
+        showBookingFeedback('Erro de conexão com o servidor. Verifique sua internet ou tente novamente mais tarde.', 'error');
       } finally {
         submitButton.innerText = originalButtonText;
         submitButton.disabled = false;

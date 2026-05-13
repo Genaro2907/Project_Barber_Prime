@@ -29,6 +29,24 @@
       <p class="admin-helper-text">Abra um agendamento para visualizar os detalhes e cancelar quando necessário.</p>
     </div>
 
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <p class="admin-stat-label">Total de Agendamentos</p>
+        <h3 id="statsTotalAppointments">--</h3>
+      </div>
+      <div class="admin-stat-card">
+        <p class="admin-stat-label">Agendamentos de Hoje</p>
+        <h3 id="statsTodayAppointments">--</h3>
+      </div>
+      <div class="admin-stat-card">
+        <p class="admin-stat-label">Serviço Mais Requisitado</p>
+        <h3 id="statsMostRequestedService">--</h3>
+        <span id="statsMostRequestedServiceCount" class="admin-stat-subtext">--</span>
+      </div>
+    </div>
+
+    <div id="adminFeedback" class="form-feedback admin-feedback" aria-live="polite"></div>
+
     <div class="admin-container" id="appointmentsList">
       <div class="no-data">Carregando agendamentos...</div>
     </div>

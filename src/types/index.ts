@@ -8,7 +8,19 @@ export interface ApiResponse<T = unknown> {
 export interface CreateAppointmentDTO {
   customerName: string;
   phoneNumber: string;
-  service: string; 
+  service: string;
+  professional: string;
   appointmentDate: string;
   appointmentTime: string;
+}
+
+export interface VerifyPinDTO {
+  pin: string;
+}
+
+export interface AppointmentStatsDTO {
+  totalAppointments: number;
+  todayAppointments: number;
+  mostRequestedService: string;
+  mostRequestedServiceCount: number;
 }

@@ -1,18 +1,18 @@
 // src/controllers/AppointmentController.ts
 import { Context } from 'koa';
 import { Types } from 'mongoose';
-import { Appointment, ServiceType } from '../models/Appointment';
-import { ApiResponse, CreateAppointmentDTO } from '../types';
+import { Appointment, ProfessionalType, ServiceType } from '../models/Appointment';
+import { ApiResponse, AppointmentStatsDTO, CreateAppointmentDTO } from '../types';
 
 export class AppointmentController {
   
   static async create(ctx: Context): Promise<void> {
     try {
       const body = ctx.request.body as CreateAppointmentDTO;
-      const { customerName, phoneNumber, service, appointmentDate, appointmentTime } = body;
+      const { customerName, phoneNumber, service, professional, appointmentDate, appointmentTime } = body;
 
       // 1. Validação de Campos Obrigatórios
-      if (!customerName || !phoneNumber || !service || !appointmentDate || !appointmentTime) {
+      if (!customerName || !phoneNumber || !service || !professional || !appointmentDate || !appointmentTime) {
         ctx.status = 400; // Bad Request
         const response: ApiResponse = {
           success: false,
@@ -34,10 +34,22 @@ export class AppointmentController {
         return;
       }
 
+      const isValidProfessional = Object.values(ProfessionalType).includes(professional as ProfessionalType);
+      if (!isValidProfessional) {
+        ctx.status = 400;
+        const response: ApiResponse = {
+          success: false,
+          message: 'Invalid professional selected.',
+        };
+        ctx.body = response;
+        return;
+      }
+
       const newAppointment = new Appointment({
         customerName,
         phoneNumber,
         service,
+        professional,
         appointmentDate,
         appointmentTime,
       });
@@ -129,6 +141,52 @@ export class AppointmentController {
       const response: ApiResponse = {
         success: false,
         message: 'An internal error occurred while canceling the appointment.',
+      };
+      ctx.body = response;
+    }
+  }
+
+  static async getStats(ctx: Context): Promise<void> {
+    try {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const todayDate = `${year}-${month}-${day}`;
+
+      const totalAppointments = await Appointment.countDocuments();
+      const todayAppointments = await Appointment.countDocuments({ appointmentDate: todayDate });
+
+      const mostRequestedServiceResult = await Appointment.aggregate<{ _id: string; count: number }>([
+        { $group: { _id: '$service', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 1 },
+      ]);
+
+      const mostRequestedService = mostRequestedServiceResult[0]?._id ?? 'Nenhum';
+      const mostRequestedServiceCount = mostRequestedServiceResult[0]?.count ?? 0;
+
+      const stats: AppointmentStatsDTO = {
+        totalAppointments,
+        todayAppointments,
+        mostRequestedService,
+        mostRequestedServiceCount,
+      };
+
+      ctx.status = 200;
+      const response: ApiResponse<AppointmentStatsDTO> = {
+        success: true,
+        message: 'Appointment stats retrieved successfully.',
+        data: stats,
+      };
+      ctx.body = response;
+    } catch (error) {
+      console.error('❌ Error fetching appointment stats:', error);
+
+      ctx.status = 500;
+      const response: ApiResponse = {
+        success: false,
+        message: 'An internal error occurred while fetching appointment stats.',
       };
       ctx.body = response;
     }

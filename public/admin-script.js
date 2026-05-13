@@ -1,7 +1,51 @@
 // public/admin-script.js
 
+const verifyAdminPin = (async () => {
+  const typedPin = window.prompt('Digite o PIN de administrador:');
+
+  if (!typedPin) {
+    alert('Acesso negado. PIN não informado.');
+    window.location.href = '/';
+    return false;
+  }
+
+  try {
+    const response = await fetch('/api/auth/verify-pin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pin: typedPin }),
+    });
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      return true;
+    }
+
+    alert('PIN inválido. Você será redirecionado para a página inicial.');
+    window.location.href = '/';
+    return false;
+  } catch (error) {
+    console.error('Error verifying admin PIN:', error);
+    alert('Erro ao verificar PIN. Você será redirecionado para a página inicial.');
+    window.location.href = '/';
+    return false;
+  }
+})();
+
 document.addEventListener('DOMContentLoaded', async () => {
+  const hasValidPin = await verifyAdminPin;
+  if (!hasValidPin) {
+    return;
+  }
+
   const container = document.getElementById('appointmentsList');
+  const adminFeedback = document.getElementById('adminFeedback');
+  const statsTotalAppointments = document.getElementById('statsTotalAppointments');
+  const statsTodayAppointments = document.getElementById('statsTodayAppointments');
+  const statsMostRequestedService = document.getElementById('statsMostRequestedService');
+  const statsMostRequestedServiceCount = document.getElementById('statsMostRequestedServiceCount');
 
   if (!container) {
     return;
@@ -11,12 +55,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.innerHTML = `<div class="no-data${isError ? ' error' : ''}">${message}</div>`;
   };
 
-  const cancelAppointment = async (appointmentId, customerName) => {
-    const shouldCancel = window.confirm(`Tem certeza que deseja cancelar o agendamento de ${customerName}?`);
-    if (!shouldCancel) {
+  const showAdminFeedback = (message, type) => {
+    if (!adminFeedback) {
       return;
     }
 
+    adminFeedback.textContent = message;
+    adminFeedback.classList.remove('success', 'error', 'visible');
+
+    if (!message) {
+      return;
+    }
+
+    adminFeedback.classList.add(type, 'visible');
+  };
+
+  const setStatsFallback = () => {
+    if (statsTotalAppointments) {
+      statsTotalAppointments.textContent = '--';
+    }
+    if (statsTodayAppointments) {
+      statsTodayAppointments.textContent = '--';
+    }
+    if (statsMostRequestedService) {
+      statsMostRequestedService.textContent = '--';
+    }
+    if (statsMostRequestedServiceCount) {
+      statsMostRequestedServiceCount.textContent = '--';
+    }
+  };
+
+  const loadStats = async () => {
+    try {
+      const response = await fetch('/api/appointments/stats');
+      const result = await response.json();
+
+      if (!response.ok || !result.success || !result.data) {
+        setStatsFallback();
+        showAdminFeedback('Não foi possível carregar as estatísticas.', 'error');
+        return;
+      }
+
+      const stats = result.data;
+
+      if (statsTotalAppointments) {
+        statsTotalAppointments.textContent = String(stats.totalAppointments);
+      }
+      if (statsTodayAppointments) {
+        statsTodayAppointments.textContent = String(stats.todayAppointments);
+      }
+      if (statsMostRequestedService) {
+        statsMostRequestedService.textContent = stats.mostRequestedService;
+      }
+      if (statsMostRequestedServiceCount) {
+        statsMostRequestedServiceCount.textContent = `${stats.mostRequestedServiceCount} agendamentos`;
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+      setStatsFallback();
+      showAdminFeedback('Erro ao carregar estatísticas do painel.', 'error');
+    }
+  };
+
+  const cancelAppointment = async (appointmentId, customerName) => {
     try {
       const response = await fetch(`/api/appointments/${appointmentId}`, {
         method: 'DELETE',
@@ -24,15 +125,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        await loadAppointments();
-        alert('Agendamento cancelado com sucesso.');
+        showAdminFeedback(`Agendamento de ${customerName} cancelado com sucesso.`, 'success');
+        await Promise.all([loadAppointments(), loadStats()]);
         return;
       }
 
-      alert(`Erro ao cancelar agendamento: ${result.message}`);
+      showAdminFeedback(`Erro ao cancelar agendamento: ${result.message}`, 'error');
     } catch (error) {
-      console.error('Erro ao cancelar agendamento:', error);
-      alert('Erro de conexão com o servidor. Tente novamente.');
+      console.error('Error canceling appointment:', error);
+      showAdminFeedback('Erro de conexão com o servidor. Tente novamente.', 'error');
     }
   };
 
@@ -56,6 +157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const dateParts = appointment.appointmentDate.split('-');
         const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+        const professionalName = appointment.professional || 'Não informado';
 
         item.innerHTML = `
           <div class="accordion-header">
@@ -69,6 +171,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="detail-row">
               <span>Serviço:</span>
               <span>${appointment.service}</span>
+            </div>
+            <div class="detail-row">
+              <span>Profissional:</span>
+              <span>${professionalName}</span>
             </div>
             <div class="detail-row">
               <span>Telefone:</span>
@@ -99,10 +205,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.appendChild(item);
       });
     } catch (error) {
-      console.error('Erro ao buscar agendamentos:', error);
+      console.error('Error loading appointments:', error);
       setStateMessage('Erro ao conectar com o servidor.', true);
     }
   };
 
-  await loadAppointments();
+  showAdminFeedback('', 'success');
+  await Promise.all([loadStats(), loadAppointments()]);
 });

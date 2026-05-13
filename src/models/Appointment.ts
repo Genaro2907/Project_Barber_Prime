@@ -7,11 +7,19 @@ export enum ServiceType {
   SKIN_CLEANING = 'Limpeza de Pele',
 }
 
+export enum ProfessionalType {
+  THIAGO = 'Thiago',
+  MARCOS = 'Marcos',
+  RAFAEL = 'Rafael',
+  BRUNO = 'Bruno',
+}
+
 export interface IAppointment extends Document {
   customerName: string;
   phoneNumber: string;
   service: ServiceType;
-  appointmentDate: string; 
+  professional: ProfessionalType;
+  appointmentDate: string;
   appointmentTime: string;
   createdAt: Date;
 }
@@ -31,6 +39,11 @@ const AppointmentSchema: Schema = new Schema({
     type: String, 
     enum: Object.values(ServiceType),
     required: true 
+  },
+  professional: {
+    type: String,
+    enum: Object.values(ProfessionalType),
+    required: true,
   },
   appointmentDate: { 
     type: String, 

@@ -185,21 +185,21 @@
 
         <div class="stat">
 
-          <h3 class="counter" data-target="5">0</h3>
+          <h3 class="counter" data-target="5">5</h3>
           <p>Anos de Experiência</p>
 
         </div>
 
         <div class="stat">
 
-          <h3 class="counter" data-target="1500">0</h3>
+          <h3 class="counter" data-target="1500">1532</h3>
           <p>Clientes Satisfeitos</p>
 
         </div>
 
         <div class="stat">
 
-          <h3 class="counter" data-target="4">0</h3>
+          <h3 class="counter" data-target="4">4</h3>
           <p>Barbeiros Profissionais</p>
 
         </div>
@@ -284,6 +284,23 @@
 
       <div class="input-group">
 
+        <label for="profissional">Profissional</label>
+        <select id="profissional" required>
+
+          <option value="">Selecione um profissional</option>
+          <option value="Thiago">Thiago</option>
+          <option value="Marcos">Marcos</option>
+          <option value="Rafael">Rafael</option>
+          <option value="Bruno">Bruno</option>
+
+        </select>
+
+        <i class="fa-solid fa-user-tie"></i>
+
+      </div>
+
+      <div class="input-group">
+
         <label for="data">Data</label>
         <input type="date" id="data" required>
 
@@ -315,6 +332,8 @@
       </button>
 
     </form>
+
+    <div id="bookingFeedback" class="form-feedback" aria-live="polite"></div>
     
     <div style="text-align: center; margin-top: 20px;">
       <a href="admin.html" class="admin-access-link">
