@@ -45,6 +45,7 @@ export class AppointmentController {
         ctx.body = response;
         return;
       }
+      const professionalValue = professional as ProfessionalType;
 
       // Prices mapping (server authoritative)
       const priceMap: Record<string, number> = {
@@ -56,11 +57,27 @@ export class AppointmentController {
 
       const totalPrice = services.reduce((acc, s) => acc + (priceMap[s] ?? 0), 0);
 
+      const existingAppointment = await Appointment.findOne({
+        professional: professionalValue,
+        appointmentDate,
+        appointmentTime,
+      });
+
+      if (existingAppointment) {
+        ctx.status = 409;
+        const response: ApiResponse = {
+          success: false,
+          message: 'This time is already booked for the selected professional.',
+        };
+        ctx.body = response;
+        return;
+      }
+
       const newAppointment = new Appointment({
         customerName,
         phoneNumber,
         services,
-        professional,
+        professional: professionalValue,
         appointmentDate,
         appointmentTime,
         totalPrice,
@@ -153,6 +170,60 @@ export class AppointmentController {
       const response: ApiResponse = {
         success: false,
         message: 'An internal error occurred while canceling the appointment.',
+      };
+      ctx.body = response;
+    }
+  }
+
+  static async getBookedTimes(ctx: Context): Promise<void> {
+    try {
+      const { professional, date } = ctx.query;
+      const professionalValue = Array.isArray(professional) ? professional[0] : professional;
+      const dateValue = Array.isArray(date) ? date[0] : date;
+
+      if (!professionalValue || !dateValue) {
+        ctx.status = 400;
+        const response: ApiResponse = {
+          success: false,
+          message: 'Professional and date are required.',
+        };
+        ctx.body = response;
+        return;
+      }
+
+      const isValidProfessional = Object.values(ProfessionalType).includes(professionalValue as ProfessionalType);
+      if (!isValidProfessional) {
+        ctx.status = 400;
+        const response: ApiResponse = {
+          success: false,
+          message: 'Invalid professional selected.',
+        };
+        ctx.body = response;
+        return;
+      }
+      const professionalValueTyped = professionalValue as ProfessionalType;
+
+      const appointments = await Appointment.find({
+        professional: professionalValueTyped,
+        appointmentDate: dateValue,
+      }).select('appointmentTime -_id');
+
+      const bookedTimes = appointments.map((appointment) => appointment.appointmentTime);
+
+      ctx.status = 200;
+      const response: ApiResponse<string[]> = {
+        success: true,
+        message: 'Booked times retrieved successfully.',
+        data: bookedTimes,
+      };
+      ctx.body = response;
+    } catch (error) {
+      console.error('❌ Error fetching booked times:', error);
+
+      ctx.status = 500;
+      const response: ApiResponse = {
+        success: false,
+        message: 'An internal error occurred while fetching booked times.',
       };
       ctx.body = response;
     }

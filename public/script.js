@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formatCurrency = (value) => `R$ ${value.toFixed(2).replace('.', ',')}`;
 
+  const professionalSelect = document.getElementById('profissional');
+  const dateInput = document.getElementById('data');
+  const timeSelect = document.getElementById('horario');
+
   const servicesDropdown = document.getElementById('servicesDropdown');
   const servicesToggle = servicesDropdown ? servicesDropdown.querySelector('.multi-select-toggle') : null;
   const servicesText = servicesDropdown ? servicesDropdown.querySelector('.multi-select-text') : null;
@@ -55,6 +59,44 @@ document.addEventListener('DOMContentLoaded', () => {
         hour += 1;
       }
       if (hour === 17) break; // stop adding start times at 16:30
+    }
+  };
+
+  const resetTimeOptions = () => {
+    if (!timeSelect) return;
+    timeSelect.innerHTML = '';
+    populateTimeOptions();
+  };
+
+  const updateBookedTimes = async () => {
+    if (!professionalSelect || !dateInput || !timeSelect) return;
+    resetTimeOptions();
+
+    const professional = professionalSelect.value;
+    const date = dateInput.value;
+
+    if (!professional || !date) return;
+
+    try {
+      const response = await fetch(`/api/appointments/booked-times?professional=${encodeURIComponent(professional)}&date=${encodeURIComponent(date)}`);
+      const result = await response.json();
+
+      if (!response.ok || !result.success || !Array.isArray(result.data)) {
+        return;
+      }
+
+      const bookedTimes = result.data;
+      Array.from(timeSelect.options).forEach((option) => {
+        if (bookedTimes.includes(option.value)) {
+          option.disabled = true;
+          option.text = `${option.value} - Ocupado`;
+          return;
+        }
+        option.disabled = false;
+        option.text = option.value;
+      });
+    } catch (error) {
+      console.error('Erro ao buscar horários ocupados:', error);
     }
   };
 
@@ -124,6 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
   populateTimeOptions();
   updateServicesSummary();
   updateBookingTotal();
+
+  if (professionalSelect) {
+    professionalSelect.addEventListener('change', updateBookedTimes);
+  }
+
+  if (dateInput) {
+    dateInput.addEventListener('change', updateBookedTimes);
+  }
 
   if (bookingForm) {
     bookingForm.addEventListener('submit', async (e) => {
